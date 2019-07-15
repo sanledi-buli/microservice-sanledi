@@ -3,7 +3,8 @@ const {
   userSchema,
   badRequestErrorSchema,
   internalErrorSchema,
-  idSchema
+  idSchema,
+  authHeaderSchema
 } = require('../schemas');
 
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
   path: '/users/{id}',
   config: {
     tags: ['api'],
-    auth: false,
+    auth: 'jwt',
     description: 'Update user',
     notes: 'Update user',
     plugins: {
@@ -24,6 +25,9 @@ module.exports = {
       }
     },
     validate: {
+      headers: Joi.object(authHeaderSchema).options({
+        allowUnknown: true
+      }),
       params: idSchema,
       payload: userSchema
     }

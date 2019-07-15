@@ -2,7 +2,8 @@ const Joi = require('@hapi/joi');
 const {
   userSchema,
   badRequestErrorSchema,
-  internalErrorSchema
+  internalErrorSchema,
+  authHeaderSchema
 } = require('../schemas');
 
 module.exports = {
@@ -10,7 +11,7 @@ module.exports = {
   path: '/users',
   config: {
     tags: ['api'],
-    auth: false,
+    auth: 'jwt',
     description: 'Create a new user',
     notes: 'Create a new user',
     plugins: {
@@ -23,6 +24,9 @@ module.exports = {
       }
     },
     validate: {
+      headers: Joi.object(authHeaderSchema).options({
+        allowUnknown: true
+      }),
       payload: userSchema
     }
   },

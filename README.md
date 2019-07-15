@@ -47,8 +47,9 @@ Configure the service with the following variables:
 | `MONGO_PASSWORD`     | `sanledi_db`   | MongoDB password.                                        |
 | `MONGO_PORT`         | `27017`        | MongoDB port.                                            |
 | `MONGO_DB`           | `sanledi_db`   | MongoDB database.                                        |
+| `JWT_SECRET`         | `secret`       | JWT secret key.                                          |
 
-## Commands
+## Docker Build & Run
 
 | Command      | Usage                                      |
 | ------------ | ------------------------------------------ |

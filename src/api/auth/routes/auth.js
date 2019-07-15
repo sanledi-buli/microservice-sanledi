@@ -1,46 +1,39 @@
+const dotenv = require('dotenv').config();
+process.env.NODE_ENV || dotenv;
+
 const Joi = require('@hapi/joi');
 const {
-  userSchema,
   badRequestErrorSchema,
   internalErrorSchema,
-  idSchema,
-  authHeaderSchema
+  idTokenSchema
 } = require('../schemas');
 
 module.exports = {
-  method: 'DELETE',
-  path: '/users/{id}',
+  method: 'GET',
+  path: '/auth',
   config: {
     tags: ['api'],
-    auth: 'jwt',
-    description: 'Delete user',
-    notes: 'Delete user',
+    auth: false,
+    description: 'Get auth',
+    notes: 'Get auth',
     plugins: {
       'hapi-swagger': {
         responses: {
           200: {
-            description: 'OK',
-            schema: Joi.string()
-              .description('OK')
-              .example('OK')
+            description: 'Success',
+            schema: idTokenSchema
           },
           400: { description: 'Bad Request', schema: badRequestErrorSchema },
           500: { description: 'Internal Error', schema: internalErrorSchema }
         }
       }
-    },
-    validate: {
-      headers: Joi.object(authHeaderSchema).options({
-        allowUnknown: true
-      }),
-      params: idSchema
     }
   },
   handler: async (req, h) => {
-    const { UserModel } = req.server.app;
+    const { createToken } = req.server.app;
     try {
-      await UserModel.findByIdAndRemove(req.params.id);
-      return h.response('OK').code(200);
+      const secret = process.env.JWT_SECRET || 'secret';
+      return h.response({ idToken: createToken(secret) }).code(200);
     } catch (e) {
       console.log(e);
       return h

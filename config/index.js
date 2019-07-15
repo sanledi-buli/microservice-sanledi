@@ -9,7 +9,8 @@ const config = {
   description: pkg.description,
   version: pkg.version,
   host: process.env.SERVICE_HOST || '0.0.0.0',
-  port: process.env.SERVICE_PORT || 3000
+  port: process.env.SERVICE_PORT || 3000,
+  jwtSecret: process.env.JWT_SECRET || 'secret'
 };
 
 const store = new Confidence.Store(config);

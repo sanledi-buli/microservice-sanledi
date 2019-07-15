@@ -9,6 +9,7 @@ const conn = `mongodb://${process.env.MONGO_USER}:${
 
 //load database
 Mongoose.connect(conn, { useNewUrlParser: true, useFindAndModify: false });
+Mongoose.set('useCreateIndex', true);
 const db = Mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error'));
